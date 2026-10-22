@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Little Mouse, Big House – D&amp;T Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --hat:#FFD23F; --hat-deep:#E8B400; --paper:#FFF6CC; --ink:#2B2B3A;
+  --blue:#2F5D8A; --blueprint:#EAF2FB; --wood:#8B5A2B; --ok:#4E9A3A; --no:#D2553F;
+  --card:#FFFFFF;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:"Andika","Comic Sans MS","Trebuchet MS",sans-serif;background:var(--paper);color:var(--ink);
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);-webkit-tap-highlight-color:transparent}
+.stripe{height:12px;background:repeating-linear-gradient(-45deg,var(--hat) 0 14px,var(--ink) 14px 28px)}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;max-width:900px;margin:0 auto}
+header h1{font-size:clamp(22px,4.5vw,34px);margin:0;line-height:1.1}
+header .sub{font-size:14px;color:var(--blue)}
+.stars{background:var(--card);border:3px solid var(--hat-deep);border-radius:999px;padding:6px 14px;font-weight:700;font-size:20px;white-space:nowrap}
+main{max-width:900px;margin:0 auto;padding:0 16px 40px}
+button{font-family:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:4px solid var(--blue);outline-offset:3px}
+
+/* home */
+.site{background:var(--blueprint);background-image:linear-gradient(#cfe0f3 1px,transparent 1px),linear-gradient(90deg,#cfe0f3 1px,transparent 1px);
+  background-size:22px 22px;border:3px solid var(--blue);border-radius:18px;padding:10px;margin-bottom:16px;position:relative}
+.site svg{width:100%;height:auto;display:block;max-height:46vh}
+.site .note{position:absolute;left:14px;top:10px;font-size:15px;color:var(--blue);background:rgba(234,242,251,.9);padding:2px 8px;border-radius:8px}
+.locked text{opacity:.18;stroke:none!important}
+.locked :not(text){fill:transparent!important;stroke:var(--blue)!important;stroke-width:1.6!important;stroke-dasharray:5 4}
+.built{animation:rise .7s ease-out}
+@keyframes rise{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:620px){.grid{grid-template-columns:repeat(2,1fr)}}
+.act{background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:14px 12px;text-align:left;display:flex;gap:12px;align-items:center;box-shadow:0 5px 0 var(--ink);transition:transform .1s}
+.act:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.act .em{font-size:38px;line-height:1}
+.act b{display:block;font-size:20px}
+.act span.vi{font-size:15px;color:#5a5a6a}
+.act.done{background:#F0F8E8;border-color:var(--ok);box-shadow:0 5px 0 var(--ok)}
+.act.done b::after{content:" ✔";color:var(--ok)}
+
+/* game screen */
+.bar{display:flex;align-items:center;gap:10px;margin:6px 0 12px;flex-wrap:wrap}
+.back{background:var(--card);border:3px solid var(--ink);border-radius:12px;padding:8px 14px;font-size:18px;font-weight:700}
+.hear{background:var(--hat);border:3px solid var(--ink);border-radius:12px;padding:8px 14px;font-size:18px;font-weight:700}
+.title{font-size:24px;font-weight:700}
+.instr{font-size:17px;margin:0 0 12px}
+.instr .vi{color:#5a5a6a;display:block;font-size:15px}
+.progress{display:flex;gap:5px;margin-left:auto}
+.progress i{width:14px;height:14px;border-radius:50%;border:2px solid var(--ink);background:#fff}
+.progress i.f{background:var(--hat)}
+
+.ic{display:inline-flex;align-items:center;justify-content:center;line-height:1}
+.emo{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.svgic svg{width:100%;height:100%}
+
+/* read */
+.page{background:var(--card);border:3px solid var(--ink);border-radius:20px;padding:18px;text-align:center}
+.scene{display:flex;justify-content:center;align-items:flex-end;gap:18px;min-height:150px;margin-bottom:10px;flex-wrap:wrap}
+.scene .grp{display:flex;flex-direction:column;align-items:center;gap:4px}
+.scene .grp .pics{display:flex}
+.scene .lbl{font-size:18px;font-weight:700;padding:2px 10px;border-radius:999px}
+.sentence{font-size:clamp(28px,6vw,44px);font-weight:700;line-height:1.35;margin:8px 0 14px}
+.w{display:inline-block;padding:0 4px;border-radius:10px;cursor:pointer;transition:background .15s}
+.w.now{background:var(--hat)}
+.r1{color:#C2410C}.r2{color:#1D6FB8}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.nav button{background:var(--card);border:3px solid var(--ink);border-radius:12px;padding:10px 18px;font-size:20px;font-weight:700}
+.nav button:disabled{opacity:.3}
+.pgno{font-size:18px}
+
+/* cards */
+.row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.tile{background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:19px;font-weight:700;min-height:120px;justify-content:center}
+.tile.sel{border-color:var(--blue);background:#DCEBFA;transform:translateY(-4px)}
+.tile.ok{border-color:var(--ok);background:#E5F4DC}
+.tile.ok.m0{background:#FFE7C7;border-color:#C2410C}
+.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+
+/* balloons */
+.sky{position:relative;height:340px;background:linear-gradient(#BFE3FF,#EAF6FF);border:3px solid var(--ink);border-radius:20px;overflow:hidden;display:flex;justify-content:space-around;align-items:center}
+.balloon{position:relative;width:22%;max-width:130px;aspect-ratio:4/5;border-radius:50% 50% 48% 48%;border:3px solid var(--ink);display:flex;align-items:center;justify-content:center;animation:bob 2.6s ease-in-out infinite;padding:0}
+.balloon::after{content:"";position:absolute;bottom:-46px;left:50%;width:2px;height:44px;background:var(--ink)}
+.balloon:nth-child(2){animation-delay:-.7s}.balloon:nth-child(3){animation-delay:-1.4s}.balloon:nth-child(4){animation-delay:-2s}
+@keyframes bob{0%,100%{transform:translateY(-10px)}50%{transform:translateY(12px)}}
+.balloon.pop{animation:pop .35s forwards}
+@keyframes pop{to{transform:scale(1.6);opacity:0}}
+
+/* missing */
+.mw{background:var(--card);border:3px solid var(--ink);border-radius:20px;padding:16px;text-align:center;margin-bottom:14px}
+.blank{display:inline-block;min-width:110px;border-bottom:5px dashed var(--blue);color:var(--ok)}
+
+/* order */
+.ocards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.ocard{position:relative;background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:18px;font-weight:700}
+.ocard .num{position:absolute;top:-12px;left:-12px;width:40px;height:40px;border-radius:50%;background:var(--ok);color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;border:3px solid var(--ink)}
+.ocard.ok{border-color:var(--ok);background:#E5F4DC}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(43,43,58,.55);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10}
+.modal .box{background:var(--paper);border:4px solid var(--ink);border-radius:22px;padding:22px;max-width:420px;text-align:center}
+.modal .big{font-size:64px}
+.modal h2{margin:6px 0}
+.modal p{margin:6px 0 14px;font-size:17px}
+.modal button{background:var(--hat);border:3px solid var(--ink);border-radius:12px;padding:10px 22px;font-size:20px;font-weight:700}
+.reset{background:none;border:none;color:#7a7a8a;text-decoration:underline;font-size:14px;margin-top:18px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);font-size:46px;pointer-events:none;animation:up 1s forwards}
+@keyframes up{from{opacity:1;transform:translate(-50%,0)}to{opacity:0;transform:translate(-50%,-80px)}}
+@media (max-width:560px){.row{grid-template-columns:repeat(2,1fr)}.tile{min-height:104px}.sky{height:300px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="stripe"></div>
+<header>
+  <div><h1>Little Mouse, Big House</h1><div class="sub">D&amp;T Academy · Pre-A1 · Unit 1 Rhythm and Rhyme</div></div>
+  <div class="stars" id="stars">⭐ 0</div>
+</header>
+<main id="app"></main>
+
+<script>
+/* ---------- icons ---------- */
+const SVG = {
+  mole: `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="64" rx="31" ry="30" fill="#5b6170"/><ellipse cx="50" cy="72" rx="18" ry="15" fill="#80879a"/><circle cx="40" cy="54" r="3.6" fill="#1d1d26"/><circle cx="60" cy="54" r="3.6" fill="#1d1d26"/><ellipse cx="50" cy="63" rx="7" ry="5" fill="#f28fb0"/><ellipse cx="27" cy="90" rx="10" ry="5" fill="#f2b8a0"/><ellipse cx="73" cy="90" rx="10" ry="5" fill="#f2b8a0"/><path d="M25 42 Q50 10 75 42 Z" fill="#FFD23F" stroke="#2B2B3A" stroke-width="2"/><rect x="20" y="39" width="60" height="7" rx="3" fill="#E8B400" stroke="#2B2B3A" stroke-width="2"/></svg>`,
+  yak: `<svg viewBox="0 0 100 100"><rect x="38" y="70" width="9" height="22" rx="3" fill="#4a2c14"/><rect x="72" y="70" width="9" height="22" rx="3" fill="#4a2c14"/><ellipse cx="60" cy="60" rx="33" ry="22" fill="#7a4a26"/><path d="M30 72 l5 8 l5 -8 l5 8 l5 -8 l5 8 l5 -8 l5 8 l5 -8 l5 8 l5 -8 l5 8" fill="#7a4a26" stroke="#7a4a26" stroke-width="2"/><path d="M14 40 Q3 28 12 16" stroke="#efe5cc" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M38 40 Q49 28 40 16" stroke="#efe5cc" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="26" cy="50" rx="16" ry="15" fill="#6a3e1f"/><ellipse cx="24" cy="60" rx="10" ry="7" fill="#9aa0ab"/><circle cx="20" cy="46" r="2.8" fill="#1d1d26"/><circle cx="32" cy="46" r="2.8" fill="#1d1d26"/></svg>`,
+  stairs: `<svg viewBox="0 0 100 100"><path d="M8 92 V74 H28 V56 H48 V38 H68 V20 H92 V92 Z" fill="#E2B56A" stroke="#8B5A2B" stroke-width="4" stroke-linejoin="round"/><path d="M8 74 H28 M28 56 H48 M48 38 H68 M68 20 H92" stroke="#fff3d6" stroke-width="3"/></svg>`,
+  cloth: `<svg viewBox="0 0 100 100"><rect x="12" y="60" width="76" height="20" rx="5" fill="#c0503a" stroke="#2B2B3A" stroke-width="2.5"/><path d="M28 60v20M44 60v20M60 60v20M76 60v20M12 70h76" stroke="#e8907d" stroke-width="2"/><rect x="18" y="40" width="64" height="20" rx="5" fill="#3d6fa8" stroke="#2B2B3A" stroke-width="2.5"/><rect x="24" y="20" width="52" height="20" rx="5" fill="#7cb342" stroke="#2B2B3A" stroke-width="2.5"/></svg>`,
+  black: `<svg viewBox="0 0 100 100"><path d="M28 34 Q50 4 72 34" fill="none" stroke="#555" stroke-width="3"/><rect x="24" y="34" width="52" height="54" rx="7" fill="#cfd3da" stroke="#2B2B3A" stroke-width="3"/><ellipse cx="50" cy="35" rx="26" ry="7" fill="#111"/><path d="M31 37 v16 a4.5 4.5 0 0 0 9 0 v-16 Z M58 37 v9 a4 4 0 0 0 8 0 v-9 Z" fill="#111"/><rect x="34" y="62" width="32" height="14" rx="3" fill="#111"/></svg>`,
+  hat: `<svg viewBox="0 0 100 100"><path d="M50 14 L78 86 H22 Z" fill="#8e6bd1" stroke="#2B2B3A" stroke-width="3" stroke-linejoin="round"/><path d="M41 38 L60 38 M34 58 L67 58" stroke="#FFD23F" stroke-width="6"/><circle cx="50" cy="12" r="8" fill="#ff7aa8" stroke="#2B2B3A" stroke-width="2.5"/></svg>`
+};
+const EMO = {chick:"🐤",brick:"🧱",dog:"🐶",log:"🪵",bear:"🐻",hole:"🕳️",boar:"🐗",door:"🚪",sloth:"🦥",fox:"🦊",clock:"🕰️",hare:"🐇",chair:"🪑",slug:"🐌",mug:"☕",snake:"🐍",cake:"🎂",bat:"🦇",mouse:"🐭",house:"🏠",plan:"📐",party:"🎉"};
+function ic(key,size){
+  size=size||64;
+  if(SVG[key]) return `<span class="ic svgic" style="width:${size}px;height:${size}px">${SVG[key]}</span>`;
+  return `<span class="ic emo" style="font-size:${Math.round(size*0.85)}px;width:${size}px;height:${size}px">${EMO[key]}</span>`;
+}
+
+/* ---------- story data ---------- */
+const PAIRS = [
+ {a:"chicks", ai:"chick", am:true, t:"bricks", ti:"brick", tm:true, s:"The chicks lay the bricks.", stem:"The chicks lay the", q:"Who lays the bricks?"},
+ {a:"dogs", ai:"dog", am:true, t:"logs", ti:"log", tm:true, s:"The dogs stack the logs.", stem:"The dogs stack the", q:"Who stacks the logs?"},
+ {a:"bears", ai:"bear", am:true, t:"stairs", ti:"stairs", tm:false, s:"The bears make the stairs.", stem:"The bears make the", q:"Who makes the stairs?"},
+ {a:"moles", ai:"mole", am:true, t:"holes", ti:"hole", tm:true, s:"The moles drill the holes.", stem:"The moles drill the", q:"Who drills the holes?"},
+ {a:"boar", ai:"boar", am:false, t:"door", ti:"door", tm:false, s:"The boar adds the door.", stem:"The boar adds the", q:"Who adds the door?"},
+ {a:"yak", ai:"yak", am:false, t:"black", ti:"black", tm:false, s:"The yak paints it black.", stem:"The yak paints it", q:"Who paints it black?"},
+ {a:"sloth", ai:"sloth", am:false, t:"cloth", ti:"cloth", tm:false, s:"The sloth provides some cloth.", stem:"The sloth provides some", q:"Who provides some cloth?"},
+ {a:"fox", ai:"fox", am:false, t:"clocks", ti:"clock", tm:true, s:"The fox provides some clocks.", stem:"The fox provides some", q:"Who provides some clocks?"},
+ {a:"hares", ai:"hare", am:true, t:"chairs", ti:"chair", tm:true, s:"The hares arrange the chairs.", stem:"The hares arrange the", q:"Who arranges the chairs?"},
+ {a:"slugs", ai:"slug", am:true, t:"mugs", ti:"mug", tm:true, s:"The slugs set out the mugs.", stem:"The slugs set out the", q:"Who sets out the mugs?"},
+ {a:"snake", ai:"snake", am:false, t:"cake", ti:"cake", tm:false, s:"The snake bakes a cake.", stem:"The snake bakes a", q:"Who bakes a cake?"},
+ {a:"bats", ai:"bat", am:true, t:"hats", ti:"hat", tm:true, s:"The bats drop off some hats.", stem:"The bats drop off some", q:"Who drops off some hats?"}
+];
+const PAGES = [{intro:true, s:"Mouse is designing a house."}].concat(PAIRS).concat([{end:true, s:"When all the work is done, it is time to have some fun!", show:"When all the work is done, it’s time to have some fun!"}]);
+
+/* ---------- speech (en-GB, rate 0.72, onvoiceschanged + 80ms) ---------- */
+let VOICE=null, speakId=0;
+function pickVoice(){
+  if(!("speechSynthesis" in window)) return;
+  const vs=speechSynthesis.getVoices();
+  VOICE=vs.find(v=>v.lang==="en-GB")||vs.find(v=>/en[-_]GB/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null;
+}
+if("speechSynthesis" in window){ pickVoice(); speechSynthesis.onvoiceschanged=pickVoice; }
+function speak(text,opts){
+  opts=opts||{};
+  if(!("speechSynthesis" in window)){ if(opts.onend) setTimeout(opts.onend,600); return; }
+  const id=++speakId;
+  speechSynthesis.cancel();
+  setTimeout(()=>{
+    if(id!==speakId) return;
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang="en-GB"; u.rate=0.72; if(VOICE) u.voice=VOICE;
+    u.onboundary=e=>{ if(id===speakId && opts.onboundary) opts.onboundary(e); };
+    u.onstart=()=>{ if(id===speakId && opts.onstart) opts.onstart(); };
+    u.onend=()=>{ if(id===speakId && opts.onend) opts.onend(); };
+    speechSynthesis.speak(u);
+  },80);
+}
+function stopSpeak(){ speakId++; if("speechSynthesis" in window) speechSynthesis.cancel(); }
+
+/* ---------- state ---------- */
+let state={stars:0, built:[false,false,false,false,false,false]};
+try{ const s=JSON.parse(localStorage.getItem("dt_lmbh")||"null"); if(s&&Array.isArray(s.built)) state=s; }catch(e){}
+function save(){ try{ localStorage.setItem("dt_lmbh",JSON.stringify(state)); }catch(e){} }
+function addStar(){ state.stars++; save(); document.getElementById("stars").textContent="⭐ "+state.stars;
+  const t=document.createElement("div"); t.className="toast"; t.textContent="⭐"; document.body.appendChild(t); setTimeout(()=>t.remove(),1000); }
+document.getElementById("stars").textContent="⭐ "+state.stars;
+
+const $app=document.getElementById("app");
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const pick=(a,n)=>shuffle(a).slice(0,n);
+function shakeEl(el){ el.classList.remove("shake"); void el.offsetWidth; el.classList.add("shake"); }
+
+/* ---------- home: the house Mouse is designing ---------- */
+const ACTS=[
+ {em:"📖",en:"Read the story",vi:"Nghe và đọc truyện",part:"the bricks",partVi:"móng gạch",run:runRead},
+ {em:"🎵",en:"Rhyme match",vi:"Ghép từ cùng vần",part:"the log walls",partVi:"tường gỗ",run:runRhyme},
+ {em:"🎈",en:"Balloon pop",vi:"Nghe và bắn bóng",part:"the stairs",partVi:"cầu thang",run:runBalloon},
+ {em:"🧩",en:"Missing word",vi:"Tìm từ còn thiếu",part:"the door and windows",partVi:"cửa và cửa sổ",run:runMissing},
+ {em:"🔢",en:"Story order",vi:"Xếp thứ tự truyện",part:"the roof",partVi:"mái nhà",run:runOrder},
+ {em:"🙋",en:"Who did it?",vi:"Bạn nào đã làm?",part:"the party",partVi:"bữa tiệc",run:runWho}
+];
+function houseSVG(justBuilt){
+  const c=i=>state.built[i]?(i===justBuilt?"built":""):"locked";
+  return `<svg viewBox="0 0 300 225" role="img" aria-label="Mouse's house">
+  <g class="${c(4)}"><path d="M52 104 L150 40 L248 104 Z" fill="#3a3a48" stroke="#2B2B3A" stroke-width="3" stroke-linejoin="round"/><rect x="198" y="50" width="18" height="34" fill="#7a4a26" stroke="#2B2B3A" stroke-width="2"/></g>
+  <g class="${c(1)}">${[0,1,2,3,4,5].map(i=>`<rect x="68" y="${104+i*11}" width="164" height="11" rx="5.5" fill="${i%2?"#a36a35":"#8B5A2B"}" stroke="#5c3a1a" stroke-width="1.5"/>`).join("")}</g>
+  <g class="${c(3)}"><rect x="134" y="122" width="32" height="48" rx="14" fill="#2B2B3A" stroke="#111" stroke-width="2"/><circle cx="150" cy="138" r="6" fill="#cfe7ff" stroke="#111" stroke-width="2"/>
+    <rect x="84" y="120" width="28" height="24" rx="3" fill="#cfe7ff" stroke="#2B2B3A" stroke-width="3"/><rect x="188" y="120" width="28" height="24" rx="3" fill="#cfe7ff" stroke="#2B2B3A" stroke-width="3"/></g>
+  <g class="${c(0)}">${[0,1,2,3,4,5].map(i=>`<rect x="${58+i*31}" y="170" width="29" height="11" rx="2" fill="#9a9aa6" stroke="#5d5d68" stroke-width="1.5"/>`).join("")}<rect x="58" y="182" width="14" height="11" rx="2" fill="#b4b4bf" stroke="#5d5d68" stroke-width="1.5"/>${[0,1,2,3,4].map(i=>`<rect x="${74+i*31}" y="182" width="29" height="11" rx="2" fill="#b4b4bf" stroke="#5d5d68" stroke-width="1.5"/>`).join("")}<rect x="229" y="182" width="15" height="11" rx="2" fill="#b4b4bf" stroke="#5d5d68" stroke-width="1.5"/></g>
+  <g class="${c(2)}"><rect x="128" y="181" width="44" height="9" fill="#E2B56A" stroke="#8B5A2B" stroke-width="2"/><rect x="120" y="190" width="60" height="9" fill="#E2B56A" stroke="#8B5A2B" stroke-width="2"/><rect x="112" y="199" width="76" height="9" fill="#E2B56A" stroke="#8B5A2B" stroke-width="2"/></g>
+  <g class="${c(5)}"><path d="M150 40 L60 96 M150 40 L240 96" stroke="#2B2B3A" stroke-width="1.5"/>${[0,1,2,3].map(i=>{const x1=150-(i+1)*18,y1=40+(i+1)*11.2,x2=150+(i+1)*18;const cols=["#ff7aa8","#FFD23F","#4fb3ff","#7cd36b"];return `<path d="M${x1} ${y1} l8 -5 l2 12 Z" fill="${cols[i]}"/><path d="M${x2} ${y1} l-8 -5 l-2 12 Z" fill="${cols[3-i]}"/>`}).join("")}<text x="250" y="206" font-size="26">🎂</text><text x="26" y="206" font-size="24">🎉</text></g>
+  <text x="196" y="214" font-size="28">🐭</text>
+  </svg>`;
+}
+function home(justBuilt){
+  stopSpeak();
+  const all=state.built.every(Boolean);
+  $app.innerHTML=`
+   <div class="site">${all?"":`<div class="note">Mouse is designing a house. Help build it! · Giúp Mouse xây nhà nhé!</div>`}${houseSVG(justBuilt)}</div>
+   <div class="grid">${ACTS.map((a,i)=>`<button class="act ${state.built[i]?"done":""}" data-i="${i}"><span class="em">${a.em}</span><span><b>${a.en}</b><span class="vi">${a.vi}</span></span></button>`).join("")}</div>
+   <div style="text-align:center"><button class="reset" id="reset">Start again · Làm lại từ đầu</button></div>`;
+  $app.querySelectorAll(".act").forEach(b=>b.addEventListener("click",()=>{ const i=+b.dataset.i; ACTS[i].run(i); }));
+  document.getElementById("reset").addEventListener("click",()=>{ if(confirm("Start again? / Làm lại từ đầu?")){ state={stars:0,built:[false,false,false,false,false,false]}; save(); document.getElementById("stars").textContent="⭐ 0"; home(); }});
+  if(all && justBuilt!==undefined) setTimeout(()=>speak("When all the work is done, it's time to have some fun!"),400);
+}
+function finish(i){
+  const first=!state.built[i];
+  state.built[i]=true; save();
+  const a=ACTS[i];
+  const m=document.createElement("div"); m.className="modal";
+  m.innerHTML=`<div class="box"><div class="big">🏗️</div><h2>Well done!</h2><p>You built ${a.part}!<br><span style="color:#5a5a6a">Con đã xây xong ${a.partVi}!</span></p><button>See the house · Xem ngôi nhà</button></div>`;
+  document.body.appendChild(m);
+  speak("Well done! You built "+a.part+"!");
+  m.querySelector("button").addEventListener("click",()=>{ m.remove(); home(first?i:undefined); });
+}
+function frame(i,title,en,vi,total){
+  $app.innerHTML=`<div class="bar"><button class="back" id="bk">⬅ Home</button><span class="title">${ACTS[i].em} ${title}</span>
+    ${total?`<span class="progress" id="prog">${"<i></i>".repeat(total)}</span>`:""}</div>
+    <p class="instr">${en}<span class="vi">${vi}</span></p><div id="g"></div>`;
+  document.getElementById("bk").addEventListener("click",home);
+  return document.getElementById("g");
+}
+function setProg(n){ const p=document.getElementById("prog"); if(!p) return; [...p.children].forEach((d,k)=>d.classList.toggle("f",k<n)); }
+
+/* ---------- 1. Read the story ---------- */
+function runRead(i){
+  const g=frame(i,"Read the story","Listen and read along. Tap a word to hear it.","Nghe và đọc theo. Chạm vào một từ để nghe từ đó.");
+  let p=0;
+  function scene(pg){
+    if(pg.intro) return `<div class="grp"><div class="pics">${ic("mouse",96)}${ic("plan",80)}</div><span class="lbl">Mouse</span></div><div class="grp"><div class="pics">${ic("house",96)}</div><span class="lbl">house</span></div>`;
+    if(pg.end) return `<div class="grp"><div class="pics">${ic("party",96)}${ic("cake",80)}${ic("hat",72)}</div><span class="lbl">fun!</span></div>`;
+    return `<div class="grp"><div class="pics">${ic(pg.ai,96)}${pg.am?ic(pg.ai,96):""}</div><span class="lbl r1">${pg.a}</span></div>
+            <div class="grp"><div class="pics">${ic(pg.ti,90)}${pg.tm?ic(pg.ti,90):""}</div><span class="lbl r2">${pg.t}</span></div>`;
+  }
+  function draw(){
+    const pg=PAGES[p];
+    const shown=(pg.show||pg.s).split(" ");
+    const rhymeA=pg.a, rhymeT=pg.t;
+    const clean=w=>w.toLowerCase().replace(/[^a-z’']/g,"");
+    g.innerHTML=`<div class="page"><div class="scene">${scene(pg)}</div>
+      <div class="sentence">${shown.map((w,k)=>{const c=clean(w);const cls=c===rhymeA?"r1":c===rhymeT?"r2":(pg.end&&(c==="done"||c==="fun")?"r1":"");return `<span class="w ${cls}" data-k="${k}">${w}</span>`}).join(" ")}</div>
+      <div class="nav"><button id="pv" ${p===0?"disabled":""}>⬅</button><button class="hear" id="hr">🔊 Hear again</button><span class="pgno">${p+1}/${PAGES.length}</span><button id="nx">${p===PAGES.length-1?"✔":"➡"}</button></div></div>`;
+    g.querySelectorAll(".w").forEach(s=>s.addEventListener("click",()=>{ const w=s.textContent.replace(/[^A-Za-z’']/g,"").replace("’","'"); flash(s); speak(w); }));
+    document.getElementById("pv").addEventListener("click",()=>{ if(p>0){p--;draw();read();} });
+    document.getElementById("nx").addEventListener("click",()=>{ if(p<PAGES.length-1){p++;draw();read();} else finish(i); });
+    document.getElementById("hr").addEventListener("click",read);
+  }
+  function flash(s){ g.querySelectorAll(".w").forEach(x=>x.classList.remove("now")); s.classList.add("now"); setTimeout(()=>s.classList.remove("now"),700); }
+  function read(){
+    const spans=[...g.querySelectorAll(".w")]; const text=PAGES[p].s; const words=text.split(" ");
+    const starts=[]; let pos=0; words.forEach(w=>{starts.push(pos);pos+=w.length+1;});
+    let gotBoundary=false, timer=null, k=0;
+    const mark=n=>{ spans.forEach(x=>x.classList.remove("now")); if(spans[n]) spans[n].classList.add("now"); };
+    speak(text,{
+      onstart(){ timer=setTimeout(function step(){ if(gotBoundary) return; mark(k); k++; if(k<spans.length) timer=setTimeout(step,(words[k-1].length*70)+260); },150); },
+      onboundary(e){ if(e.name&&e.name!=="word") return; gotBoundary=true; clearTimeout(timer); let n=0; starts.forEach((s,idx)=>{ if(e.charIndex>=s) n=idx; }); mark(n); },
+      onend(){ clearTimeout(timer); setTimeout(()=>spans.forEach(x=>x.classList.remove("now")),300); }
+    });
+  }
+  draw(); read();
+}
+
+/* ---------- 2. Rhyme match ---------- */
+function runRhyme(i){
+  const ROUNDS=3; let r=0;
+  const pool=shuffle(PAIRS);
+  const g=frame(i,"Rhyme match","Tap an animal, then tap the word that rhymes.","Chạm vào một con vật, rồi chạm vào từ cùng vần với nó.",ROUNDS);
+  function round(){
+    setProg(r);
+    const set=pool.slice(r*4,r*4+4); const items=shuffle(set);
+    let sel=null, done=0;
+    g.innerHTML=`<div class="row" id="ra">${set.map((p,k)=>`<button class="tile" data-k="${k}">${ic(p.ai,64)}<span>${p.a}</span></button>`).join("")}</div>
+      <div class="row" id="rt">${items.map(p=>`<button class="tile" data-t="${p.t}">${ic(p.ti,64)}<span>${p.t}</span></button>`).join("")}</div>`;
+    g.querySelectorAll("#ra .tile").forEach(b=>b.addEventListener("click",()=>{
+      if(b.classList.contains("ok")) return;
+      g.querySelectorAll("#ra .tile").forEach(x=>x.classList.remove("sel")); b.classList.add("sel"); sel=set[+b.dataset.k]; speak(sel.a);
+    }));
+    g.querySelectorAll("#rt .tile").forEach(b=>b.addEventListener("click",()=>{
+      if(b.classList.contains("ok")) return;
+      if(!sel){ speak(b.dataset.t); return; }
+      if(sel.t===b.dataset.t){
+        const ab=g.querySelector('#ra .tile.sel'); ab.classList.remove("sel"); ab.classList.add("ok"); b.classList.add("ok");
+        if(done%2===0){ab.classList.add("m0");b.classList.add("m0");}
+        speak(sel.a+", "+sel.t+"!"); addStar(); sel=null; done++;
+        if(done===4){ r++; setProg(r); setTimeout(()=>{ if(r<ROUNDS) round(); else finish(i); },1600); }
+      } else { shakeEl(b); speak("Try again! "+sel.a+"…"); }
+    }));
+  }
+  round();
+}
+
+/* ---------- 3. Balloon pop ---------- */
+function runBalloon(i){
+  const N=8; const qs=pick(PAIRS,N); let n=0;
+  const cols=["#FF8FB1","#7FC8FF","#FFD23F","#9BE07E","#C9A7FF"];
+  const g=frame(i,"Balloon pop","Listen and pop the right balloon.","Nghe và chạm vào quả bóng đúng.",N);
+  function q(){
+    setProg(n);
+    const target=qs[n]; const opts=shuffle([target].concat(pick(PAIRS.filter(p=>p!==target),3)));
+    g.innerHTML=`<div class="bar"><button class="hear" id="hr">🔊 Hear again</button></div>
+      <div class="sky">${opts.map((p,k)=>`<button class="balloon" style="background:${cols[(k+n)%cols.length]}" data-t="${p.t}" aria-label="${p.t}">${ic(p.ti,58)}</button>`).join("")}</div>`;
+    const say=()=>speak("Pop the "+target.t+"!");
+    document.getElementById("hr").addEventListener("click",say);
+    let locked=false;
+    g.querySelectorAll(".balloon").forEach(b=>b.addEventListener("click",()=>{
+      if(locked) return;
+      if(b.dataset.t===target.t){ locked=true; b.classList.add("pop"); addStar(); speak(target.t+"!"); n++; setTimeout(()=>{ if(n<N) q(); else { setProg(N); finish(i);} },1100); }
+      else { shakeEl(b); speak("Try again! Pop the "+target.t+"."); }
+    }));
+    say();
+  }
+  q();
+}
+
+/* ---------- 4. Missing word ---------- */
+function runMissing(i){
+  const N=8; const qs=pick(PAIRS,N); let n=0;
+  const g=frame(i,"Missing word","Listen. Which word is missing?","Nghe câu. Từ nào còn thiếu?",N);
+  function q(){
+    setProg(n);
+    const t=qs[n]; const opts=shuffle([t].concat(pick(PAIRS.filter(p=>p!==t),2)));
+    g.innerHTML=`<div class="mw"><div class="scene">${ic(t.ai,90)}</div>
+       <div class="sentence">${t.stem} <span class="blank" id="bl">&nbsp;</span>.</div>
+       <button class="hear" id="hr">🔊 Hear again</button></div>
+       <div class="opts">${opts.map(p=>`<button class="tile" data-t="${p.t}">${ic(p.ti,70)}<span>${p.t}</span></button>`).join("")}</div>`;
+    const say=()=>speak(t.stem+" …");
+    document.getElementById("hr").addEventListener("click",say);
+    let locked=false;
+    g.querySelectorAll(".tile").forEach(b=>b.addEventListener("click",()=>{
+      if(locked) return;
+      if(b.dataset.t===t.t){ locked=true; b.classList.add("ok"); document.getElementById("bl").textContent=t.t; addStar();
+        speak(t.s,{onend:()=>{ n++; setTimeout(()=>{ if(n<N) q(); else { setProg(N); finish(i);} },500); }}); }
+      else { shakeEl(b); speak("Try again!"); }
+    }));
+    say();
+  }
+  q();
+}
+
+/* ---------- 5. Story order ---------- */
+function runOrder(i){
+  const ROUNDS=3; let r=0;
+  const g=frame(i,"Story order","Tap the pictures in story order: 1, 2, 3, 4.","Chạm vào các tranh theo đúng thứ tự trong truyện: 1, 2, 3, 4.",ROUNDS);
+  const starts=shuffle([0,2,4,6,8]).slice(0,ROUNDS);
+  function round(){
+    setProg(r);
+    const start=starts[r]; const seq=PAIRS.slice(start,start+4); const cards=shuffle(seq.map((p,k)=>({p,k})));
+    let next=0;
+    g.innerHTML=`<div class="ocards">${cards.map(c=>`<button class="ocard" data-k="${c.k}"><div>${ic(c.p.ai,60)}${ic(c.p.ti,60)}</div><span>${c.p.s}</span></button>`).join("")}</div>`;
+    g.querySelectorAll(".ocard").forEach(b=>b.addEventListener("click",()=>{
+      if(b.classList.contains("ok")) return;
+      const k=+b.dataset.k;
+      if(k===next){ b.classList.add("ok"); b.insertAdjacentHTML("beforeend",`<span class="num">${k+1}</span>`); addStar(); speak(seq[k].s); next++;
+        if(next===4){ r++; setTimeout(()=>{ setProg(r); if(r<ROUNDS) round(); else finish(i); },2600); } }
+      else { shakeEl(b); speak("Not yet! What comes next?"); }
+    }));
+  }
+  round();
+}
+
+/* ---------- 6. Who did it? ---------- */
+function runWho(i){
+  const N=8; const qs=pick(PAIRS,N); let n=0;
+  const g=frame(i,"Who did it?","Listen to the question. Tap the animal.","Nghe câu hỏi. Chạm vào con vật đúng.",N);
+  function q(){
+    setProg(n);
+    const t=qs[n]; const opts=shuffle([t].concat(pick(PAIRS.filter(p=>p!==t),2)));
+    g.innerHTML=`<div class="mw"><div class="scene">${ic(t.ti,90)}</div><div class="sentence">${t.q}</div><button class="hear" id="hr">🔊 Hear again</button></div>
+      <div class="opts">${opts.map(p=>`<button class="tile" data-a="${p.a}">${ic(p.ai,70)}<span>${p.a}</span></button>`).join("")}</div>`;
+    const say=()=>speak(t.q);
+    document.getElementById("hr").addEventListener("click",say);
+    let locked=false;
+    g.querySelectorAll(".tile").forEach(b=>b.addEventListener("click",()=>{
+      if(locked) return;
+      if(b.dataset.a===t.a){ locked=true; b.classList.add("ok"); addStar();
+        speak("Yes! "+t.s,{onend:()=>{ n++; setTimeout(()=>{ if(n<N) q(); else { setProg(N); finish(i);} },500); }}); }
+      else { shakeEl(b); speak("Not the "+b.dataset.a+". Try again!"); }
+    }));
+    say();
+  }
+  q();
+}
+
+home();
+</script>
+</body>
+</html>
